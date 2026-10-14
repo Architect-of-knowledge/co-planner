@@ -4,7 +4,7 @@
 
 `/co-planner` is a Claude Code plugin for planning anything bigger than a single fix: a feature, a product area, a redesign. Instead of one long plan from a single prompt, it runs short rounds of questions. Each round is built from your last answers *and your free-text notes*, which often say more than the option you clicked. Every decision is spread to the whole family of similar components, and the plugin looks for "3rd knowledge": two parts you already have that together make something neither does alone. It remembers your taste and design rules between sessions, and it ends with a wave plan sized to ship, with parallel lanes and one surgical check per task.
 
-[עברית](README.he.md)
+[עברית](README.he.md) · [Changelog](CHANGELOG.md) · [Roadmap](ROADMAP.md)
 
 *Designed by Eyal Nof. First used to turn a web DAW's strong but disconnected components into one usable studio. See [the example run](examples/creation-studio-run.md).*
 
