@@ -15,6 +15,18 @@ Any CLI that can take a brief and work headless can run a lane. List it in `.co-
 - Never give a worker flags that skip permission checks or disable its sandbox.
 - Read-only reviewers (a second model reviewing the merged wave) are cheap insurance: run one after each merge.
 
+### Antigravity (`agy`) with Gemini, in any mode
+
+Google's Antigravity CLI runs Gemini models headless; its model names carry the effort (check `agy models`): `gemini-3.8-flash-high` for fast implementation lanes, `gemini-3.1-pro-high` for hard lanes and read-only reviews.
+- Run it from inside the lane's clone (it works on the current directory), in print mode with an explicit timeout: `agy -p "$(cat <brief>)" --model gemini-3.8-flash-high --mode accept-edits --sandbox --print-timeout 0 --disable-slash-commands --output-format json`.
+- In print mode, tools that need approval are **soft-denied** and the run can end with status `WAITING`. Allow only the commands and folders the lane needs in Antigravity's settings (for example `command(npm)`, `command(git)`, `write_file(src/)`), and trust the clone's folder. Never `--dangerously-skip-permissions`.
+- Read-only review: `--mode plan --sandbox` with `gemini-3.1-pro-high`.
+- Check the JSON `status` at the end (`SUCCESS`, `ERROR`, `WAITING` …), not only the exit code.
+
+### Codex CLI (GPT models), in any mode
+
+`codex exec -m <model> -c model_reasoning_effort='"<effort>"' -s workspace-write -C <clone> -o <report.md> < <brief>`. Codex's sandbox keeps `.git` read-only, so it leaves its work uncommitted and lists the commits it would make. Efficient mode's default Codex worker is GPT-5.6 Terra (`gpt-5.6-terra`, effort `high`, or `xhigh` for a hard lane).
+
 Example launch lines (adjust models and flags to the tool's own docs):
 
 ```bash

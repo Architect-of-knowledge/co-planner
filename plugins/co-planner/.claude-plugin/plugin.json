@@ -1,7 +1,7 @@
 {
   "name": "co-planner",
   "displayName": "co-planner",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Plan with Claude in compounding question rounds that build on your answers and notes, spread each decision to its whole family, find 3rd knowledge, remember your taste, and end in a sized, verifiable wave plan. English and Hebrew (strict RTL).",
   "author": { "name": "Eyal Nof", "url": "https://github.com/Architect-of-knowledge" },
   "homepage": "https://github.com/Architect-of-knowledge/co-planner",

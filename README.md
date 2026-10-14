@@ -20,6 +20,7 @@ Then, in any project:
 ```text
 /co-planner make onboarding feel like one flow instead of four screens
 /co-planner quick add CSV export to the reports page
+/co-planner --efficient rebuild the settings area
 /co-planner --lang he תכנן איתי את מערכת ההרשאות
 ```
 
@@ -38,6 +39,8 @@ Then, in any project:
 6. **The review after the wave.** Once the wave ships and you've used it, one short round asks what you actually used and what felt wrong. Taste learns from use, not only from answers.
 
 **Quick mode** (`/co-planner quick …`): two rounds, no spread, one lane, for small features.
+
+**Efficient mode** (`/co-planner --efficient …`): a strong coordinator (run your session on Opus) with lighter, cheaper workers: Claude Sonnet subagents by default, plus GPT-5.6 Terra (Codex CLI) or Gemini (Antigravity) when installed. Quality holds because the coordinator writes the failing tests first and gives each worker a **thick brief**: helpers to reuse with their `file:line`, one worked example to copy, exact signatures, steps in order, forbidden moves and a self-check. Lanes stay at 2–4 files, and the coordinator reads every diff. Details: [`references/efficient.md`](plugins/co-planner/skills/co-planner/references/efficient.md).
 
 ## What it remembers (in your repo)
 
@@ -65,7 +68,7 @@ A checker (`scripts/rtl-check.mjs`) verifies every Hebrew file co-planner writes
 
 ## Workers
 
-By default, lanes run as Claude subagents, each in its own git worktree. You can add other coding CLIs as workers (one local clone per lane, never with permission-skipping flags); see [`references/workers.md`](plugins/co-planner/skills/co-planner/references/workers.md).
+By default, lanes run as Claude subagents, each in its own git worktree. In any mode you can add other coding CLIs as workers: the OpenAI Codex CLI (GPT models such as GPT-5.6 Terra), Google Antigravity (`agy`, with Gemini 3.8 Flash for fast lanes and Gemini 3.1 Pro for hard lanes and reviews), or others. Use one local clone per lane, never with permission-skipping flags. See [`references/workers.md`](plugins/co-planner/skills/co-planner/references/workers.md).
 
 ## Requirements
 
