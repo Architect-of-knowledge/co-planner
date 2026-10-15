@@ -1,0 +1,16 @@
+Generated using the built-in image_gen tool.
+
+Use case: ads-marketing.
+Asset: square 1:1 high-resolution social-media campaign poster for co-planner, the collaborative planning skill for Claude Code and Codex.
+Audience: experienced builders who move between planning, implementation and later agent sessions. Emphasize preserving accepted decisions and carrying a concise project handoff forward. Do not imply automatic synchronization of all work or guaranteed memory.
+Art direction: refined sculptural paper-craft product illustration on warm ivory paper, rich cobalt blue, restrained orange and dark ink. Bold contemporary geometric sans-serif typography, NOT serif. Crisp craft detail, beautiful soft shadows, minimal focused composition with generous margins.
+Visual centerpiece: two separate elegant open paper workspaces or folded notebook stages, one on the left and one on the right, joined by a single arched cobalt paper bridge. Traveling across the bridge is one compact ivory dossier with three visible staggered tabs, each bearing a simple embossed symbol: a decision/check, a dependency chain, and an arrow for next action. Orange thin accent line passes continuously through the dossier and into the second workspace, visually preserving the thread. The left workspace contains a few tidy planning cards; the right contains a small ordered stack of execution cards with checkmarks. Make the central portable dossier unmistakably the hero. This is a tactile metaphor for a scoped handoff, not a literal software screenshot. No people, robots, glowing neural networks or clutter.
+Hierarchy: co-planner name at the top; large headline in two lines; illustration across middle; concise supporting line and platform footer below.
+Use ONLY this exact text:
+"co-planner"
+"Keep the decisions."
+"Carry the context."
+"Plans • Decisions • Next steps"
+"Claude Code + Codex"
+"English + עברית"
+Hebrew עברית must be correctly spelled, naturally right-to-left. Do not add words to the illustrated tabs, only symbols. No logos or affiliation badges, no statistics or token/cost reduction claims, no URLs or watermarks. Opaque ivory background.

@@ -1,0 +1,10 @@
+Edited using the built-in image_gen tool from the corresponding original image in this folder.
+
+Use case: text-localization. Edit the supplied square co-planner ribbon-path poster with a minimal change. Preserve the EXACT illustration: crumpled ivory paper at left, cobalt ribbon, orange accent ribbon, three question cards and three checklist cards, all texture, shadows, lighting, crop, composition and scale. Preserve all typography, including the serif style, and keep existing wording and placement.
+Remove ONLY the bottom line "English + עברית", filling its area seamlessly with the original ivory background.
+All other text remains EXACTLY:
+"co-planner"
+"An idea is a starting point."
+"Discover the questions. Shape the plan."
+"Claude Code + Codex"
+Do not change, translate, move or add any other elements. This is an English-language final poster without a language-availability footer. Opaque background.

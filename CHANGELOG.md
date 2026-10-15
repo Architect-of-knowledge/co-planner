@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.2.0 (2026-10-14)
+
+- Explicit native Plan mode entry workflow in both platform skills and both usage guides; context writes remain deferred to authorized implementation.
+- Adaptive, explore and converge planning styles; new-project support and explicit readiness checks.
+- Guided planning (`--guided`, optional `guidance` config) surfaces overlooked decisions through concrete scenarios and recommended defaults.
+- Evidence-based suggestions include benefit, cost, alternatives and validation; accepted scope remains separate from optional ideas.
+- Managed context sections and compact handoffs preserve existing user content, respect plan-mode restrictions and load detail on demand.
+- Self-contained Codex skill, shared-resource synchronization and isolated-package checks.
+- Mapper coverage and traversal fixes; project adapters are now opt-in via `--adapter` with timeout/error handling.
+- Read-only context checker; model-neutral worker briefs and proportionate verification.
+- Novice-to-expert usage guide, bilingual documentation, regression tests and behavioral evaluation scenarios.
+
 ## 0.1.1 (2026-10-14)
 
 - **Efficient mode** (`--efficient`): a strong coordinator (an Opus-class session) with lighter workers. By default these are Claude Sonnet subagents; GPT-5.6 Terra through the Codex CLI and Gemini 3.8 Flash and 3.1 Pro through Antigravity can be added when installed.

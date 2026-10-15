@@ -12,7 +12,7 @@ Three read-only search agents walked the journey "add a kick and a bass, make a 
 - the playlist refused instrument drops;
 - clicking a lane header renamed it by accident.
 
-The cause behind all of them: **nothing shared a "selected channel" or "selected pattern"**, so every window guessed its own target. The map script shows this directly: the playlist and the piano roll touch no common store.
+The cause behind all of them: **nothing shared a "selected channel" or "selected pattern"**, so every window guessed its own target. The map suggested where to investigate because it detected no common store; tracing the handlers established the missing shared selection. A heuristic map alone cannot prove the absence of other handoff mechanisms.
 
 ## How the rounds compounded
 
@@ -44,3 +44,7 @@ Four fixes went into co-planner the same day:
 - **The mandatory tally line.** It had been skipped.
 - **A size gate.** Wave 1 grew from one item to about twelve without a cut question.
 - **A review round after each wave**, so taste also learns from real use.
+
+## Version note
+
+This records the original 0.1 workflow. Version 0.2 uses explicit readiness checks, proportionate question rounds and scoped context instead of mandatory percentage tallies or fixed lane sizing. The original lessons still motivate inspecting evidence before recommending implementation changes.

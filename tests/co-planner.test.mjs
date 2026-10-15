@@ -11,7 +11,7 @@ const skill = join(here, "../plugins/co-planner/skills/co-planner");
 const { checkText } = await import(join(skill, "scripts/rtl-check.mjs"));
 
 test("rtl-check passes the shipped Hebrew files", () => {
-  const files = [...readdirSync(join(skill, "templates/he")).map((f) => join(skill, "templates/he", f)), join(here, "../README.he.md")];
+  const files = [...readdirSync(join(skill, "templates/he")).map((f) => join(skill, "templates/he", f)), join(here, "../README.he.md"), join(here, "../how-to-use.he.md")];
   for (const f of files) assert.deepEqual(checkText(readFileSync(f, "utf8")), [], f);
 });
 
@@ -28,7 +28,7 @@ test("map finds families, views and the state they share", () => {
   assert.match(out, /stores found: useCart, useUser|stores found: useUser, useCart/);
   assert.match(out, /CartPage\.tsx: useCart\(w\)/);
   assert.match(out, /useCart \(src\/state\/cart\.ts\): 2 views/);
-  assert.match(out, /Views sharing no store with another view \(1\)/);
+  assert.match(out, /Views with no detected shared store among 3 inspected views \(1\)/);
   const one = execFileSync(process.execPath, [join(skill, "scripts/map.mjs"), "CheckoutPage"], { cwd: join(here, "fixture-app"), encoding: "utf8" });
   assert.match(one, /imports: src\/state\/cart/);
   assert.equal(spawnSync(process.execPath, [join(skill, "scripts/map.mjs"), "nothing-here"], { cwd: join(here, "fixture-app") }).status, 1);

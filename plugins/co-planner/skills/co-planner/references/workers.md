@@ -1,67 +1,33 @@
-# Workers: who implements the lanes
+# Implementation workers
 
-The plan's lanes run in parallel, each owning a set of files that no other lane touches. The coordinator (the main session) writes the contracts first, reviews each lane's diff, merges, and runs the full gates once.
+Lanes are a planning structure, not authorization to launch agents. Use workers only during authorized implementation and when the host permits delegation. Sequential implementation is a full fallback. Independent read-only exploration can use available agents when it will reduce uncertainty enough to justify the overhead.
 
-## Default: Claude subagents
+## Native workers
 
-Launch one subagent per lane with the Agent tool, in its own git worktree (`isolation: "worktree"`) or a local clone, in the background. Give it the lane's brief file. Ask it to commit after every finished step, run only its focused gates, and end with a report: done or blocked per task, commits, gate results, checks that need a browser, and **any insight or 3rd knowledge**.
+Use the host's supported agent mechanism and isolation options. Do not assume Claude tool names exist in Codex or vice versa. A worktree/clone is appropriate for concurrent edits when supported; read-only searches need no clone. Assign non-overlapping files and stage shared contracts before dependent work. If ownership must change, coordinate before editing.
 
-## Optional: external worker CLIs
+## External CLI workers
 
-Any CLI that can take a brief and work headless can run a lane. List it in `.co-planner/config.json` `workers`, and keep these rules:
-- **One local clone per lane** (`git clone -q . ../<project>-<lane>`, then a branch). Some sandboxes cannot write a worktree's git data, which lives in the main repo; a clone keeps it inside the worker's folder.
-- Install dependencies **before** launch if the worker's sandbox blocks the network.
-- If the tool cannot commit inside its sandbox, have it leave the work uncommitted and list the commits it would make; the coordinator commits after reading the diff.
-- Never give a worker flags that skip permission checks or disable its sandbox.
-- Read-only reviewers (a second model reviewing the merged wave) are cheap insurance: run one after each merge.
+Only use a configured or user-selected CLI after checking it is installed and inspecting current help/documentation for supported flags and model choices. CLI presence alone does not establish login, access, model availability or permission to run. Avoid hard-coded models, reasoning levels and launch recipes that may silently become obsolete.
 
-### Antigravity (`agy`) with Gemini, in any mode
+Use a separate local clone/worktree per editing lane, within permitted locations. Prepare dependencies when necessary and permitted. Respect permissions and sandboxing; never use bypass flags. Whether git commits are writable depends on the environment: leave a diff if committing is unavailable. Inspect both exit status and the tool's reported completion state, not just a successful process exit.
 
-Google's Antigravity CLI runs Gemini models headless; its model names carry the effort (check `agy models`): `gemini-3.8-flash-high` for fast implementation lanes, `gemini-3.1-pro-high` for hard lanes and read-only reviews.
-- Run it from inside the lane's clone (it works on the current directory), in print mode with an explicit timeout: `agy -p "$(cat <brief>)" --model gemini-3.8-flash-high --mode accept-edits --sandbox --print-timeout 0 --disable-slash-commands --output-format json`.
-- In print mode, tools that need approval are **soft-denied** and the run can end with status `WAITING`. Allow only the commands and folders the lane needs in Antigravity's settings (for example `command(npm)`, `command(git)`, `write_file(src/)`), and trust the clone's folder. Never `--dangerously-skip-permissions`.
-- Read-only review: `--mode plan --sandbox` with `gemini-3.1-pro-high`.
-- Check the JSON `status` at the end (`SUCCESS`, `ERROR`, `WAITING` …), not only the exit code.
+A worker that cannot finish reports the blocker and partial changes; it must not invent verification results. The coordinator reviews diffs, integrates in dependency order and runs relevant gates. Workers report insights; only the coordinator updates shared handoff/memory to avoid overwriting concurrent progress.
 
-### Codex CLI (GPT models), in any mode
-
-`codex exec -m <model> -c model_reasoning_effort='"<effort>"' -s workspace-write -C <clone> -o <report.md> < <brief>`. Codex's sandbox keeps `.git` read-only, so it leaves its work uncommitted and lists the commits it would make. Efficient mode's default Codex worker is GPT-5.6 Terra (`gpt-5.6-terra`, effort `high`, or `xhigh` for a hard lane).
-
-Example launch lines (adjust models and flags to the tool's own docs):
-
-```bash
-# OpenAI Codex CLI, inside the lane's clone
-codex exec -m <model> -s workspace-write -C ../proj-lane-a -o lane-a-report.md < ../proj-lane-a/.co-planner/briefs/lane-a.md
-# Any CLI with a prompt flag, read-only review of the merged wave
-<tool> --read-only -p "$(cat .co-planner/briefs/review.md)"
-```
-
-## The brief (every lane)
+## Brief
 
 ```markdown
-# Task: <wave>, lane <X>: <one line>
-You are an implementation worker. Infer the scope from this brief and do the whole job without asking questions.
-Work only in <clone or worktree>, on branch <branch>.
-
-## Why
-<the friction this lane removes, with file:line evidence>
-
-## Read first
-<project instructions, the plan section for this lane, the contracts the coordinator wrote>
-
-## The task
-<numbered items, each with its done-when>
-
-## Tests (one per done-when; nothing else)
-
-## Rules
-- Files you own: <list>. Never: <the other lanes' files, the contract files>.
-- <the project's non-negotiables>
-- Log any insight or 3rd knowledge that comes up while building, in your report.
-
-## Gates
-<focused tests, typecheck, build: never the full suite>
-
-## Report
-Done or blocked per task, commits, gate results, checks that need a browser, insights.
+# Lane: <outcome>
+Workspace/branch: <actual isolated location, if needed>
+Read: <applicable project instructions, plan section, shared contracts>
+Why: <accepted outcome and relevant evidence>
+Tasks: <changes in dependency order, with observable acceptance criteria>
+Own: <files/components>; coordinate before changing ownership.
+Reuse: <relevant existing patterns and helpers>
+Verify: <actual focused commands and expected behavior>
+Constraints: <relevant project requirements; known baseline failures>
+Blockers: report missing contracts or consequential ambiguity; do not invent scope.
+Report: changes, checks run and results, unresolved issues, useful new insights.
 ```
+
+Do not ban broader testing when a specific new risk warrants it. Read-only independent review is optional, proportional to risk and available tools.

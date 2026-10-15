@@ -3,33 +3,45 @@
 // and the shared state those views touch. Run from the project root:
 //   node map.mjs            the whole map
 //   node map.mjs <name>     one component: matching files, what they import, and who imports them
-// If the project has `.co-planner/map.mjs`, it runs afterwards as the project's own, richer adapter.
-// No dependencies. JS/TS (React, Vue, Svelte) and Python are understood; other files are counted only.
+// Pass --adapter to run a reviewed .co-planner/map.mjs after the generic map.
+// No dependencies. Heuristic JS/TS and Python inspection; other source languages are not parsed.
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { basename, dirname, extname, join, relative, resolve } from "node:path";
 import { spawnSync } from "node:child_process";
 
 const ROOT = process.cwd();
-const SKIP = new Set(["node_modules", ".git", "dist", "build", "out", "coverage", ".next", ".nuxt", ".svelte-kit", "vendor", "target", "__pycache__", ".venv", "venv", ".turbo", ".cache"]);
+const args = process.argv.slice(2);
+const useAdapter = args.includes("--adapter");
+const positional = args.filter((arg) => arg !== "--adapter");
+if (positional.length > 1 || positional.some((arg) => arg.startsWith("--"))) {
+  console.error("Usage: node map.mjs [focus] [--adapter]");
+  process.exit(2);
+}
+let capped = false;
+let unreadable = 0;
+let oversized = 0;
+
+const SKIP = new Set(["node_modules", ".git", "dist", "build", "out", "coverage", ".next", ".nuxt", ".svelte-kit", "vendor", "target", "__pycache__", ".venv", "venv", ".turbo", ".cache", ".co-planner"]);
 const CODE = new Set([".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs", ".vue", ".svelte", ".py"]);
 const MAX_FILES = 20000, MAX_BYTES = 400_000;
 const isTest = (f) => /(\.|_)(test|spec)\.[a-z]+$|(^|\/)(tests?|__tests__|spec)\//.test(f);
 
 function walk(dir, out = []) {
-  if (out.length >= MAX_FILES) return out;
+  if (out.length >= MAX_FILES) { capped = true; return out; }
   let entries;
   try { entries = readdirSync(dir, { withFileTypes: true }); } catch { return out; }
-  for (const e of entries) {
+  for (const e of entries.sort((a, b) => a.name.localeCompare(b.name))) {
+    if (out.length >= MAX_FILES) { capped = true; break; }
     if (e.name.startsWith(".") && e.name !== ".co-planner") continue;
     const p = join(dir, e.name);
     if (e.isDirectory()) { if (!SKIP.has(e.name)) walk(p, out); }
-    else if (CODE.has(extname(e.name))) out.push(relative(ROOT, p));
+    else if (e.isFile() && CODE.has(extname(e.name))) out.push(relative(ROOT, p).replaceAll("\\", "/"));
   }
   return out;
 }
 const files = walk(ROOT).filter((f) => !isTest(f) && !f.startsWith(".co-planner/"));
 const text = new Map();
-const read = (f) => { if (!text.has(f)) { let t = ""; try { if (statSync(f).size <= MAX_BYTES) t = readFileSync(f, "utf8"); } catch { /* unreadable: counted, not parsed */ } text.set(f, t); } return text.get(f); };
+const read = (f) => { if (!text.has(f)) { let t = ""; try { if (statSync(f).size <= MAX_BYTES) t = readFileSync(f, "utf8"); else oversized++; } catch { unreadable++; } text.set(f, t); } return text.get(f); };
 
 // ---------- families: workspace packages, else top-level source folders ----------
 function workspaces() {
@@ -71,10 +83,25 @@ const touches = (t, s) => new RegExp(`\\b${s.replace(/\$/g, "\\$")}\\b`).test(t)
 const writes = (t, s) => new RegExp(`\\b${s.replace(/\$/g, "\\$")}\\s*\\.\\s*(setState|set|update|dispatch|\\$patch)\\b|\\b${s.replace(/\$/g, "\\$")}\\.getState\\(\\)\\.(set|add|remove|update|toggle|select|open|commit|apply)\\w*`).test(t);
 
 // ---------- one component ----------
-const focus = process.argv[2];
+function runAdapter() {
+  if (!useAdapter) return;
+  const adapter = join(ROOT, ".co-planner", "map.mjs");
+  if (!existsSync(adapter)) { console.error("map: --adapter requested but .co-planner/map.mjs is missing"); process.exitCode = 1; return; }
+  console.log("\n## Project adapter (.co-planner/map.mjs)");
+  const result = spawnSync(process.execPath, [adapter, ...positional], { stdio: "inherit", timeout: 5000, killSignal: "SIGKILL" });
+  if (result.error || result.status !== 0) {
+    console.error(`map: adapter failed (${result.error?.code ?? result.signal ?? result.status})`);
+    process.exitCode = 1;
+  }
+}
+function coverage() {
+  console.log(`\nCoverage: heuristic JS/TS and Python symbol scan; relative JS/TS imports only. ${oversized} oversized and ${unreadable} unreadable files not parsed${capped ? "; source scan capped" : ""}.`);
+  console.log("Undetected connections are unknown, not absent. Trace props, routes, APIs, events, indirect hooks and persistence before diagnosing a handoff.");
+}
+const focus = positional[0];
 if (focus) {
   const hits = files.filter((f) => f.toLowerCase().includes(focus.toLowerCase()) || exportsOf(read(f)).includes(focus));
-  if (!hits.length) { console.error(`map: nothing matches "${focus}"`); process.exit(1); }
+  if (!hits.length) { console.error(`map: nothing matches "${focus}" in the generic scan`); coverage(); runAdapter(); process.exit(1); }
   const importsOf = (f) => [...read(f).matchAll(/(?:import|export)[^'"]*?from\s*['"](\.[^'"]+)['"]|require\(\s*['"](\.[^'"]+)['"]\s*\)/g)].map((m) => relative(ROOT, resolve(dirname(f), m[1] ?? m[2])));
   for (const f of hits.slice(0, 12)) {
     const stem = f.replace(/\.[^.]+$/, "");
@@ -86,13 +113,15 @@ if (focus) {
     const st = [...stores.keys()].filter((s) => touches(read(f), s));
     if (st.length) console.log(`  state: ${st.map((s) => (writes(read(f), s) ? `${s}(w)` : s)).join(", ")}`);
   }
-  process.exit(0);
+  coverage();
+  runAdapter();
+  process.exit(process.exitCode ?? 0);
 }
 
 // ---------- the whole map ----------
 const fam = new Map();
 for (const f of files) { const k = familyOf(f); const v = fam.get(k) ?? { files: 0, exports: 0, views: 0 }; v.files++; v.exports += exportsOf(read(f)).length; if (isView(f)) v.views++; fam.set(k, v); }
-console.log(`# Map of ${basename(ROOT)}  (${files.length} source files${files.length >= MAX_FILES ? ", capped" : ""}; tests skipped)\n`);
+console.log(`# Map of ${basename(ROOT)}  (${files.length} source files${capped ? ", capped" : ""}; tests skipped)\n`);
 console.log("## Families (component groups: workspace package › folder)");
 for (const [k, v] of [...fam].sort((a, b) => a[0].localeCompare(b[0]))) console.log(`  ${k}  files=${v.files}  exports=${v.exports}${v.views ? `  views=${v.views}` : ""}`);
 
@@ -100,7 +129,8 @@ const views = files.filter(isView);
 console.log(`\n## Views (${views.length}) and the shared state each touches  (w = writes)`);
 console.log(`   stores found: ${stores.size ? [...stores.keys()].join(", ") : "none (no zustand/redux/pinia/svelte/atom/signal/context exports detected)"}`);
 const usedBy = new Map();
-for (const v of views.slice(0, 200)) {
+const scannedViews = views.slice(0, 200);
+for (const v of scannedViews) {
   const t = read(v);
   const st = [...stores.keys()].filter((s) => stores.get(s) !== v && touches(t, s));
   for (const s of st) (usedBy.get(s) ?? usedBy.set(s, []).get(s)).push(v);
@@ -111,12 +141,9 @@ console.log("\n## State shared by 2+ views (the channels views can hand off thro
 const shared = [...usedBy].filter(([, vs]) => vs.length > 1).sort((a, b) => b[1].length - a[1].length);
 for (const [s, vs] of shared) console.log(`  ${s} (${stores.get(s)}): ${vs.length} views`);
 if (!shared.length) console.log("  none");
-const lonely = views.filter((v) => ![...usedBy.values()].some((vs) => vs.length > 1 && vs.includes(v)));
-if (views.length) console.log(`\nViews sharing no store with another view (${lonely.length}): in a journey that crosses two of them, a handoff is likely missing.`);
+const lonely = scannedViews.filter((v) => ![...usedBy.values()].some((vs) => vs.length > 1 && vs.includes(v)));
+if (scannedViews.length) console.log(`\nViews with no detected shared store among ${scannedViews.length} inspected views (${lonely.length}): investigate other handoff mechanisms; not evidence of a broken journey.`);
+if (views.length > scannedViews.length) console.log(`Uninspected views: ${views.length - scannedViews.length}; their shared state is unknown.`);
 
-const adapter = join(ROOT, ".co-planner", "map.mjs");
-if (existsSync(adapter)) {
-  console.log("\n## Project adapter (.co-planner/map.mjs)");
-  const r = spawnSync(process.execPath, [adapter, ...process.argv.slice(2)], { stdio: "inherit" });
-  if (r.status) console.log(`(adapter exited ${r.status})`);
-}
+coverage();
+runAdapter();

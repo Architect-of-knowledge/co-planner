@@ -1,0 +1,11 @@
+Edited using the built-in image_gen tool from the corresponding original image in this folder.
+
+Use case: text-localization. Edit the supplied co-planner question-mark paper-sculpture poster into its Hebrew-language version. Preserve the EXACT sculpture, question cards, checkmarks, textures, lighting, ivory background, cobalt/orange colors, square crop, composition, scale and placements. Only change the specified text regions; do not redesign or mirror the artwork.
+Keep the top brand "co-planner" unchanged in its existing bold blue Latin lettering.
+Replace the English headline "The questions you didn’t know to ask." with this EXACT Hebrew headline:
+"השאלות שלא ידעתם לשאול."
+Render perfectly spelled Hebrew, natural right-to-left word and letter order, one centered prominent line in a bold modern Hebrew sans-serif matching the original weight, color and hierarchy.
+Replace the footer "Guided planning for Claude Code + Codex" with this EXACT mixed Hebrew/brand footer:
+"תכנון מודרך ל־Claude Code ול־Codex"
+Render the Hebrew right-to-left and the two brand names internally left-to-right. The sentence should naturally read from the right: תכנון מודרך, then ל־Claude Code, then ול־Codex. Keep centered footer placement in the same area and preserve clear spacing. Product names stay in English.
+Remove the bottom "English + עברית" line entirely and restore the ivory background there. Do not include any other English descriptions or any language-availability line. Keep generous margins and the original illustration untouched. Opaque background.

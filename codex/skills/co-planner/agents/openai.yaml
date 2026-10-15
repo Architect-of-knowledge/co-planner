@@ -1,0 +1,4 @@
+interface:
+  display_name: "Co-planner"
+  short_description: "Plan together with grounded ideas and compact context"
+  default_prompt: "Use $co-planner to improve my idea and produce an implementation-ready plan."

@@ -1,0 +1,11 @@
+Edited using the built-in image_gen tool from the corresponding original image in this folder.
+
+Use case: text-localization. Edit the supplied co-planner ribbon-path poster into the approved Hebrew version, changing text only. Preserve the EXACT crumpled-paper starting point, question cards, folded cobalt ribbon and orange branch, checklist cards, ivory paper textures, soft shadows, background, crop, artwork scale and composition. Do not mirror or redesign the illustration.
+Keep top brand "co-planner" unchanged, including its blue serif font.
+Replace the headline "An idea is a starting point." with this EXACT Hebrew:
+"רעיון הוא נקודת התחלה."
+Replace the subtitle "Discover the questions. Shape the plan." with this EXACT Hebrew:
+"מגלים את השאלות. מגבשים את התוכנית."
+Use elegant Hebrew serif typography consistent with the existing editorial serif style, matching weight hierarchy and dark ink color. Spell every Hebrew letter correctly, in natural right-to-left order; center the text in the original headline and subtitle areas. Adjust spacing only as needed to fit the approved Hebrew text legibly.
+Keep the footer "Claude Code + Codex" unchanged in English and in its existing serif font and placement.
+Remove the bottom "English + עברית" line completely and restore the ivory background seamlessly. No language-availability footer, no English descriptive headline, no additional words or symbols. Only the brand and platform names remain English. Opaque background.

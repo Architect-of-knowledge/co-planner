@@ -1,35 +1,35 @@
-# `.co-planner/config.json`
+# Optional `.co-planner/config.json`
 
-Optional. Created by task 0 on the first run, with only the fields the session learned. Every field is optional.
+All fields are optional. Missing config uses defaults; preserve unknown fields and existing values during updates. Invalid JSON: report the problem and use stated session defaults without overwriting the file. Unknown style/language/guidance/context values: report and fall back to the defaults below for this session.
 
 ```json
 {
   "lang": "en",
+  "planningStyle": "adaptive",
+  "guidance": "auto",
+  "contextManagement": "managed",
   "contractFiles": ["src/schema/**", "src/api/types.ts"],
-  "gates": { "focused": "npx vitest run <files>", "typecheck": "npm run typecheck", "full": "npm test" },
+  "gates": { "focused": "npm test -- <test-file>", "typecheck": "npm run typecheck", "full": "npm test" },
   "maxLanes": 3,
-  "workers": [
-    { "name": "claude", "kind": "subagent", "isolation": "worktree" },
-    { "name": "sonnet", "kind": "subagent", "model": "sonnet", "modes": ["efficient"] },
-    { "name": "terra", "kind": "codex", "model": "gpt-5.6-terra", "effort": "high", "modes": ["efficient"] },
-    { "name": "gemini-flash", "kind": "agy", "model": "gemini-3.8-flash-high", "modes": ["full", "efficient"] },
-    { "name": "gemini-pro", "kind": "agy", "model": "gemini-3.1-pro-high", "role": "hard-or-review", "modes": ["full", "efficient"] }
-  ],
-  "statusFile": "HANDOFF.md",
+  "workers": [{ "name": "native", "kind": "subagent", "modes": ["efficient"] }],
+  "statusFile": ".co-planner/handoff.md",
   "insightsFile": ".co-planner/insights.md"
 }
 ```
 
-| Field | Meaning |
-|---|---|
-| `lang` | `en` or `he`: the language of the rounds, the plan and the files co-planner writes |
-| `contractFiles` | Files only the coordinator (the main session) edits: schemas, API types, shared contracts. Wave 1 starts with them, and lanes never own them |
-| `gates` | The commands lanes run (`focused`, `typecheck`) and the one the coordinator runs once at the merge (`full`) |
-| `maxLanes` | How many lanes run in parallel (default 3) |
-| `workers` | Who implements lanes. The default is Claude subagents, each in its own worktree. `kind` is `subagent`, `codex`, `agy` or another CLI (`references/workers.md`); `model` and `effort` override the defaults; `modes` limits a worker to `full`, `quick` or `efficient`; `role: "hard-or-review"` reserves it for hard lanes and reviews. Model names change: check `codex --help` and `agy models` |
-| `statusFile` | The file that says where work stands ("next, in order"). Plans that jump ahead of it say so |
-| `insightsFile` | Where emergent insights and 3rd knowledge are logged, if the project already has such a log |
+- `lang`: explicit `--lang en|he` wins, then config, then the request's language.
+- `planningStyle`: `adaptive` (default), `explore`, or `converge`. Explicit flags or conversational choices override config; a session override need not change the saved default.
+- `guidance`: `auto` (default), `guided`, or `off`. Auto offers help when important overlooked choices emerge; `--guided` or a natural-language request enables it explicitly. Guidance does not change planning style or quick limits.
+- `contextManagement`: `managed` (default) or `off`. Controls context-care writes, including native-memory pointers. Off does not disable required instruction loading. Existing topic memory remains usable; only save changes if specifically requested.
+- `contractFiles`: coordinator-owned shared interfaces; lanes must not edit them concurrently.
+- `gates`: project-specific commands; examples are not guaranteed available. Discover real commands before including them in a plan.
+- `maxLanes`: positive integer, default 3; an upper bound, not a target. Dependencies and host limits may require fewer or sequential tasks.
+- `workers`: optional worker preferences. `kind` may be `subagent`, `codex`, `agy`, or another installed CLI. Optional `model`, `effort`, `isolation`, `role`, and `modes` remain supported. Configuration is not proof a worker/model exists or permission to launch it. Omit model names to use host defaults.
+- `statusFile`: existing project handoff if configured; otherwise reuse a suitable existing handoff or default to `.co-planner/handoff.md`. Preserve unrelated content.
+- `insightsFile`: existing insight log, otherwise `.co-planner/insights.md`.
 
-## `.co-planner/map.mjs` (optional adapter)
+No mandatory migration: older configs, memory tables, `quick`, `--efficient`, and `--lang` remain valid. Write only fields actually needed, and never infer a worker override from an installed executable alone.
 
-A project can add its own map script. It runs after the generic map with the same arguments, from the project root, and prints Markdown sections. Typical uses: a plugin or module registry grouped by category, a dependency graph, a design-system inventory, routes and the screens they open. Keep it read-only and fast (under a few seconds).
+## Optional project adapter
+
+A project may supply `.co-planner/map.mjs` for registries, routes, graphs or other specialized evidence. Inspect it before running; it must be read-only. Invoke the generic map with `--adapter` to execute it after either a full or focused map. It receives the focus argument, runs from the project root and prints Markdown. A 5-second timeout bounds adapter runtime; failures are reported and return nonzero status, retaining generic output. This is a timeout, not a security sandbox.

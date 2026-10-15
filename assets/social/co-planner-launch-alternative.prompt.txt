@@ -1,0 +1,15 @@
+Generated using the built-in image_gen tool.
+
+Use case: ads-marketing.
+Asset: square 1:1 high-resolution social-media poster for co-planner, a collaborative planning skill for Claude Code and Codex. First of three alternative launch visuals.
+Audience: novice and intermediate builders. Concept: an initial idea becomes a useful plan through guided questions.
+Art direction: elegant editorial typography and tactile folded-paper sculpture on a warm ivory background; rich cobalt blue, dark ink lettering, restrained orange accents; soft studio shadows. Match a premium paper-craft campaign, striking at thumbnail size. Generous margins, beautiful negative space. No neon, robot, brain, stock photography, screenshot, logos or extraneous labels.
+Visual: a small rough paper scribble or loosely folded paper spark at the left/top becomes one continuous sculptural paper ribbon. The ribbon passes through three upright paper cards with large simple question symbols and branches briefly at a decision, then converges into an orderly three-step paper plan with checkmark icons at lower right. This should feel dimensional and witty, not a corporate flowchart. Clear composition, few objects, crisp craft textures.
+Text hierarchy: product name prominent at top; main headline large and beautifully balanced over two short lines; visual centerpiece occupies the middle; compact footer beneath.
+Use ONLY this exact text:
+"co-planner"
+"An idea is a starting point."
+"Discover the questions. Shape the plan."
+"Claude Code + Codex"
+"English + עברית"
+Hebrew word עברית must be spelled correctly and in natural right-to-left order. No statistics, savings claims, calls to download, URLs, badges or watermarks. Opaque background.

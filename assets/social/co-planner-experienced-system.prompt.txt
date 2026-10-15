@@ -1,0 +1,16 @@
+Generated using the built-in image_gen tool.
+
+Use case: ads-marketing.
+Asset: square 1:1 high-resolution social media launch poster for co-planner, a planning skill for Claude Code and Codex.
+Audience: experienced software builders. The benefit illustrated is noticing connections and reuse opportunities across an existing codebase and planning coherent changes across components.
+Design: premium tactile folded-paper architectural sculpture on warm ivory paper. Rich cobalt blue, deep ink and restrained vivid orange. Soft natural studio shadows, realistic paper fiber detail, crisp precision, calm confident contemporary editorial layout. Large bold geometric sans-serif typography (not serif). Clear at thumbnail size.
+Visual centerpiece: a small isometric architectural landscape of five distinct paper modules, each with a different simple abstract cutout or slot, organized into two loosely separated groups. A clever central folded-paper junction connects the modules through cobalt ribbons. One orange bridge connects a previously separate module, visibly completing a coherent shared structure. The joining structure is elegant and plausible, a surprising architectural sculpture, NOT a generic network of glowing dots. Simple embossed line symbols suggest components and shared interfaces without code or text. Few strong forms, spacious layout.
+Product name at top; headline large over two short lines; sculpture in center; small factual benefit line and platform footer below.
+Exact text only:
+"co-planner"
+"Find the connections."
+"Plan the system."
+"Reuse • Shared contracts • Clear dependencies"
+"Claude Code + Codex"
+"English + עברית"
+Spell Hebrew עברית correctly in natural right-to-left order. No extra text, logos, affiliation badges, numerical improvement claims, token savings claims, website addresses or watermarks. Do not imply guaranteed detection of every dependency. Opaque ivory background.

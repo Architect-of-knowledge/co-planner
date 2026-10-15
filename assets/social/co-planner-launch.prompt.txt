@@ -1,0 +1,14 @@
+Generated using the built-in image_gen tool.
+
+Use case: ads-marketing.
+Asset type: polished social media launch poster for the open-source co-planner skill, square 1:1 composition, high-resolution.
+Primary request: a cool, catchy, exceptionally well-designed editorial poster about collaborative AI planning that helps people discover the questions they did not know to ask. Audience: novice and intermediate builders using Claude Code or Codex.
+Art direction: warm ivory paper background, deep ink typography, bold cobalt blue and a few warm orange accents. Sophisticated tactile 3D paper sculpture meets precise editorial information design. No neon cyberpunk, no robots, no stock-photo people, no fake app screenshot.
+Visual centerpiece: a striking sculptural question mark constructed from folded paper paths and small architectural planning cards. At its upper curve the paths are loose, exploratory, branching; toward its base they resolve into an orderly sequence of three connected plan tiles, with tiny simple check marks and connector lines. Express discovery turning into a buildable plan. Coherent elegant geometry, soft realistic shadows, generous negative space, distinctive silhouette visible at thumbnail size. Not a literal technical diagram, and no tiny unreadable text on the cards.
+Typography: large, crisp, perfectly spelled contemporary grotesk, strong hierarchy. Product name near the top, headline prominently arranged in two or three short lines, sculpture occupying central/lower area, compact footer. Comfortable margins for social cropping, no overcrowding.
+Exact text only:
+"co-planner"
+"The questions you didn’t know to ask."
+"Guided planning for Claude Code + Codex"
+"English + עברית"
+Keep the Hebrew word עברית spelled correctly and in its natural right-to-left order. Use plain platform names, no third-party logos or affiliation badges. No statistics, token savings claims, calls to download, URLs, watermarks or other text. Opaque background.

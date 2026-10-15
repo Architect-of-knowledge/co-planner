@@ -1,11 +1,22 @@
 {
   "name": "co-planner",
   "displayName": "co-planner",
-  "version": "0.1.1",
-  "description": "Plan with Claude in compounding question rounds that build on your answers and notes, spread each decision to its whole family, find 3rd knowledge, remember your taste, and end in a sized, verifiable wave plan. English and Hebrew (strict RTL).",
-  "author": { "name": "Eyal Nof", "url": "https://github.com/Architect-of-knowledge" },
+  "version": "0.2.0",
+  "description": "Collaborative planning with grounded improvement suggestions, guided decisions, verifiable plans and compact project context. English and Hebrew.",
+  "author": {
+    "name": "Eyal Nof",
+    "url": "https://github.com/Architect-of-knowledge"
+  },
   "homepage": "https://github.com/Architect-of-knowledge/co-planner",
   "repository": "https://github.com/Architect-of-knowledge/co-planner",
   "license": "MIT",
-  "keywords": ["planning", "design", "plan-mode", "architecture", "ux", "hebrew", "rtl"]
+  "keywords": [
+    "planning",
+    "design",
+    "plan-mode",
+    "architecture",
+    "ux",
+    "hebrew",
+    "rtl"
+  ]
 }

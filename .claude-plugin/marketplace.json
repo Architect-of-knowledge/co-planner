@@ -1,12 +1,15 @@
 {
   "name": "architect-of-knowledge",
-  "owner": { "name": "Eyal Nof", "url": "https://github.com/Architect-of-knowledge" },
+  "owner": {
+    "name": "Eyal Nof",
+    "url": "https://github.com/Architect-of-knowledge"
+  },
   "description": "Planning tools for Claude Code by Eyal Nof.",
   "plugins": [
     {
       "name": "co-planner",
       "source": "./plugins/co-planner",
-      "description": "Plan with Claude in compounding question rounds that build on your answers and notes, spread each decision to its whole family, find 3rd knowledge, remember your taste, and end in a sized, verifiable wave plan. English and Hebrew (strict RTL)."
+      "description": "Collaborative planning with guided decisions, grounded suggestions, verifiable plans and compact context. English and Hebrew."
     }
   ]
 }
